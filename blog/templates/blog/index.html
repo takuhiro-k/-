@@ -1,10 +1,30 @@
-<h1>投稿一覧</h1>
-<ul>
-  {% for post in object_list %}
-  {% if user.is_authenticated or post.is_public %}
-  <li>{% if not post.is_public %}[下書き] {% endif %}<a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a></li>
-  {% endif %}
-  {% empty %}
-  <li>まだ投稿はありません。</li>
-  {% endfor %}
-</ul>
+{% extends "base.html" %}
+
+{% block title %}投稿一覧 | {{ block.super }}{% endblock %}
+{% block description %}ギターのメンテナンス・材料・パーツの解説をするサイトです。{% endblock %}
+
+{% block content %}
+  <ul>
+    {% for post in object_list %}
+        {% if user.is_authenticated or post.is_public %}
+        
+        <li>
+          {% if not post.is_public %}[下書き] {% endif %}
+          <a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a>
+          <br>
+          {% if post.image %}
+          <a href="{% url 'blog:post_detail' post.id %}">
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" width="240" height="126">
+          </a>
+          {% endif %}
+        </li>
+          {% else  %}
+          <li>まだ投稿はありません。</li>
+          {% endif %}
+    {% endfor %}
+
+    
+    
+  </ul>
+{% endblock %}
+
